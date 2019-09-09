@@ -1,0 +1,27 @@
+version: '3.5'
+services:
+    nifi-node-01:
+        image: apache/nifi:1.9.2
+        hostname: nifi-node-01
+        command: tail -F /dev/null
+        ports:
+            - "8080:8080"
+        volumes:
+            - "./.kbd/nifi-node-01/logs:/opt/nifi/nifi-current/logs"
+            - "./.kbd/nifi-node-01/database_repository:/opt/nifi/nifi-current/database_repository"
+            - "./.kbd/nifi-node-01/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository"
+            - "./.kbd/nifi-node-01/content_repository:/opt/nifi/nifi-current/content_repository"
+            - "./.kbd/nifi-node-01/provenance_repository:/opt/nifi/nifi-current/provenance_repository"
+            - "./.kbd/nifi-node-01/state:/opt/nifi/nifi-current/state"
+            - "./.kbd/nifi-node-01/work:/opt/nifi/nifi-current/work"
+        networks:
+            nifi-net:
+                ipv4_address: 172.21.0.10
+networks:
+  nifi-net:
+    name: nifi-net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.21.0.0/24
