@@ -1,0 +1,149 @@
+version: '3.5'
+services:
+
+    # Apache Zookeeper
+    zoo-node-01:
+        image: zookeeper:3.5.5
+        hostname: zoo-node-01
+        restart: always
+        volumes:
+            - "./.kbd/zoo-node-01/data:/data"
+            - "./.kbd/zoo-node-01/datalog:/datalog"
+            - "./.kbd/zoo-node-01/logs:/logs"
+        environment:
+            ZOO_MY_ID: 1
+        networks:
+            playground-net:
+                ipv4_address: 172.100.0.2
+
+    # Apache Hadoop
+
+    hdfs-namenode-01:
+        image: adruzenko/kbd-hadoop3:latest
+        hostname: hdfs-namenode-01
+        command: hadoop namenode
+        environment:
+            - DFS_NAMENODE_NAME_DIR=/var/local/hadoop/dfs/namenode
+        ports:
+            - "9870:9870"
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "./.kbd/hdfs-namenode-01/logs:/var/log/hadoop"
+            - "./.kbd/hdfs-namenode-01/dfs/namenode:/var/local/hadoop/dfs/namenode"
+            - "./.kbd/hdfs-namenode-01/dfs/journalnode:/var/local/hadoop/dfs/journalnode"
+        networks:
+            playground-net:
+                ipv4_address: 172.100.0.10
+
+    hdfs-datanode-01:
+        image: adruzenko/kbd-hadoop3:latest
+        hostname: hdfs-datanode-01
+        command: hadoop datanode
+        ports:
+            - "9864:9864"
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "./.kbd/hdfs-datanode-01/logs:/var/log/hadoop"
+            - "./.kbd/hdfs-datanode-01/dfs/datanode:/var/local/hadoop/dfs/datanode"
+        networks:
+            playground-net:
+                ipv4_address: 172.100.0.20
+        depends_on:
+            - hdfs-namenode-01
+
+    yarn-resourcemanager-01:
+        image: adruzenko/kbd-hadoop3:latest
+        hostname: yarn-resourcemanager-01
+        command: hadoop resourcemanager
+        ports:
+            - "8088:8088"
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "./.kbd/yarn-resourcemanager-01/logs:/var/log/hadoop"
+        networks:
+            playground-net:
+                ipv4_address: 172.100.0.30
+
+    yarn-nodemanager-01:
+        image: adruzenko/kbd-hadoop3:latest
+        hostname: yarn-nodemanager-01
+        command: hadoop nodemanager
+        ports:
+            - "8042:8042"
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "./.kbd/yarn-nodemanager-01/logs:/var/log/hadoop"
+            - "./.kbd/yarn-nodemanager-01/tmp/mapred:/tmp/mapred"
+        networks:
+            playground-net:
+                ipv4_address: 172.100.0.40
+        depends_on:
+            - yarn-resourcemanager-01
+
+    mapred-historyserver-01:
+        image: adruzenko/kbd-hadoop3:latest
+        hostname: mapred-historyserver-01
+        command: hadoop historyserver
+        ports:
+            - "19888:19888"
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "./.kbd/mapred-historyserver-01/logs:/var/log/hadoop"
+            - "./.kbd/mapred-historyserver-01/tmp/mapred:/tmp/mapred"
+        networks:
+            playground-net:
+                ipv4_address: 172.100.0.50
+        depends_on:
+            - yarn-resourcemanager-01
+
+    # Apache NiFi
+
+    nifi-node-01:
+        image: apache/nifi:1.9.2
+        hostname: nifi-node-01
+        command: tail -F /dev/null
+        ports:
+            - "8080:8080"
+            - "12100-12200:12100-12200"
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "./.kbd/nifi-node-01/logs:/opt/nifi/nifi-current/logs"
+            - "./.kbd/nifi-node-01/database_repository:/opt/nifi/nifi-current/database_repository"
+            - "./.kbd/nifi-node-01/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository"
+            - "./.kbd/nifi-node-01/content_repository:/opt/nifi/nifi-current/content_repository"
+            - "./.kbd/nifi-node-01/provenance_repository:/opt/nifi/nifi-current/provenance_repository"
+            - "./.kbd/nifi-node-01/state:/opt/nifi/nifi-current/state"
+            - "./.kbd/nifi-node-01/work:/opt/nifi/nifi-current/work"
+        networks:
+            playground-net:
+                ipv4_address: 172.100.0.60
+
+    # Confluent Kafka
+
+    kafka-node-01:
+        image: confluentinc/cp-kafka:latest
+        environment:
+            KAFKA_BROKER_ID: 1
+            KAFKA_ZOOKEEPER_CONNECT: zoo-node-01:2181
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-node-01:29092,PLAINTEXT_HOST://localhost:9092
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+            KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+        ports:
+            - 9092:9092
+        volumes:
+            - "/.kbd/kafka-node-01/data:/var/lib/kafka/data"
+        depends_on:
+            - zoo-node-01
+        networks:
+            playground-net:
+                ipv4_address: 172.100.0.70
+
+networks:
+  playground-net:
+    name: playground-net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.100.0.0/24
