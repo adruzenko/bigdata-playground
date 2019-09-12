@@ -153,7 +153,6 @@ services:
 
 networks:
   playground-net:
-    name: playground-net
     driver: bridge
     ipam:
       driver: default
