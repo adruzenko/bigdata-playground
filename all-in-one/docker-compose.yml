@@ -19,7 +19,7 @@ services:
     # Apache Hadoop
 
     hdfs-namenode-01:
-        image: adruzenko/kbd-hadoop3:latest
+        image: adruzenko/kbd-hadoop3:3.2.0
         hostname: hdfs-namenode-01
         command: hadoop namenode
         environment:
@@ -36,7 +36,7 @@ services:
                 ipv4_address: 172.100.0.10
 
     hdfs-datanode-01:
-        image: adruzenko/kbd-hadoop3:latest
+        image: adruzenko/kbd-hadoop3:3.2.0
         hostname: hdfs-datanode-01
         command: hadoop datanode
         ports:
@@ -52,7 +52,7 @@ services:
             - hdfs-namenode-01
 
     yarn-resourcemanager-01:
-        image: adruzenko/kbd-hadoop3:latest
+        image: adruzenko/kbd-hadoop3:3.2.0
         hostname: yarn-resourcemanager-01
         command: hadoop resourcemanager
         ports:
@@ -65,7 +65,7 @@ services:
                 ipv4_address: 172.100.0.30
 
     yarn-nodemanager-01:
-        image: adruzenko/kbd-hadoop3:latest
+        image: adruzenko/kbd-hadoop3:3.2.0
         hostname: yarn-nodemanager-01
         command: hadoop nodemanager
         ports:
@@ -81,7 +81,7 @@ services:
             - yarn-resourcemanager-01
 
     mapred-historyserver-01:
-        image: adruzenko/kbd-hadoop3:latest
+        image: adruzenko/kbd-hadoop3:3.2.0
         hostname: mapred-historyserver-01
         command: hadoop historyserver
         ports:
@@ -133,7 +133,7 @@ services:
     # Confluent Kafka
 
     kafka-node-01:
-        image: confluentinc/cp-kafka:latest
+        image: confluentinc/cp-kafka:5.3.1
         environment:
             KAFKA_BROKER_ID: 1
             KAFKA_ZOOKEEPER_CONNECT: zoo-node-01:2181
