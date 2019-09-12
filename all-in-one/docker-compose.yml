@@ -132,7 +132,7 @@ services:
         ports:
             - 9092:9092
         volumes:
-            - "/.kbd/kafka-node-01/data:/var/lib/kafka/data"
+            - ".kbd/kafka-node-01/data:/var/lib/kafka/data"
         depends_on:
             - zoo-node-01
         networks:
