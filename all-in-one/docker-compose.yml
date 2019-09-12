@@ -101,12 +101,15 @@ services:
     nifi-node-01:
         image: apache/nifi:1.9.2
         hostname: nifi-node-01
-        command: tail -F /dev/null
         ports:
             - "8080:8080"
             - "12100-12200:12100-12200"
         volumes:
+            - "./etc/nifi:/opt/nifi/nifi-current/conf"
             - "./etc/hadoop:/etc/hadoop"
+            - "./.kbd/nifi-node-01/flow:/var/lib/nifi/flow"
+            - "./.kbd/nifi-node-01/flow_archive:/var/lib/nifi/flow_archive"
+            - "./.kbd/nifi-node-01/templates:/var/lib/nifi/templates"
             - "./.kbd/nifi-node-01/logs:/opt/nifi/nifi-current/logs"
             - "./.kbd/nifi-node-01/database_repository:/opt/nifi/nifi-current/database_repository"
             - "./.kbd/nifi-node-01/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository"
