@@ -57,15 +57,15 @@ services:
             - "8080:8080"
             - "12100-12200:12100-12200"
         volumes:
-            - "./etc/nifi:/opt/nifi/nifi-current/conf"
+#            - "./etc/nifi:/opt/nifi/nifi-current/conf"
             - "./etc/hadoop:/etc/hadoop"
             - "./etc/nifi/nifi.truststore:/labs/nifi/bitstamp.truststore"
-            - "../.kbd/nifi-node-01/templates:/var/lib/nifi/templates"
-            - "../.kbd/nifi-node-01/logs:/opt/nifi/nifi-current/logs"
-            - "../.kbd/nifi-node-01/database_repository:/opt/nifi/nifi-current/database_repository"
-            - "../.kbd/nifi-node-01/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository"
-            - "../.kbd/nifi-node-01/content_repository:/opt/nifi/nifi-current/content_repository"
-            - "../.kbd/nifi-node-01/provenance_repository:/opt/nifi/nifi-current/provenance_repository"
+#            - "../.kbd/nifi-node-01/templates:/var/lib/nifi/templates"
+#            - "../.kbd/nifi-node-01/logs:/opt/nifi/nifi-current/logs"
+#            - "../.kbd/nifi-node-01/database_repository:/opt/nifi/nifi-current/database_repository"
+#            - "../.kbd/nifi-node-01/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository"
+#            - "../.kbd/nifi-node-01/content_repository:/opt/nifi/nifi-current/content_repository"
+#            - "../.kbd/nifi-node-01/provenance_repository:/opt/nifi/nifi-current/provenance_repository"
         networks:
             playground-net:
 
