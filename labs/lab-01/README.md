@@ -42,6 +42,13 @@ $ make init
 
 ### Task 3: Verifing Lab Environment ###
 
+Componet       | URL
+---------------|----------------------------
+Apache NiFi    | http://localhost:8080/nifi/
+HDFS Name Node | http://localhost:9870
+HDFS Data Node | http://localhost:9864/
+
+
 ### Excersice 3: Data Ingestion from Bitstamp Websocket ###
 
 ### Task 1: Subscribing to Bitstamp Websocket
