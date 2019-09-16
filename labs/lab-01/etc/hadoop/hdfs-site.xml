@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <property>
+        <name>dfs.namenode.rpc-address</name>
+        <value>hdfs-namenode-01:8020</value>
+    </property>
+    <property>
+        <name>dfs.namenode.http-address</name>
+        <value>hdfs-namenode-01:9870</value>
+    </property>
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>/var/local/hadoop/dfs/namenode</value>
+    </property>
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>/var/local/hadoop/dfs/datanode</value>
+    </property>
+    <property>
+        <name>dfs.permissions.superusergroup</name>
+        <value>hadoop</value>
+    </property>
+</configuration>
