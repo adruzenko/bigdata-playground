@@ -34,7 +34,11 @@ This repository contains [Vagrantfile](https://github.com/adruzenko/bigdata-play
 $ git clone https://github.com/adruzenko/bigdata-playground.git
 ```
 2. Open command-line and navigate to `bigdata-playground/labs/lab1` folder
-3. Start docker-compose environment by executing `docker-compose up` command.
+3. Linux and Mac OS: Initialize folder structure:
+```
+$ make init
+```
+4. Start docker-compose environment by executing `docker-compose up` command.
 
 ### Task 3: Verifing Lab Environment ###
 
