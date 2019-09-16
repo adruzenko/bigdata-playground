@@ -1,29 +1,28 @@
-data_dir=../.kbd
+KBD_DATA_DIR ?= ../.kbd
 dirs= \
-  ${data_dir}/zoo-node-01/data \
-  ${data_dir}/zoo-node-01/datalog \
-  ${data_dir}/zoo-node-01/logs \
-  ${data_dir}/hdfs-namenode-01/logs \
-  ${data_dir}/hdfs-namenode-01/dfs/namenode \
-  ${data_dir}/hdfs-namenode-01/dfs/journalnode \
-  ${data_dir}/hdfs-datanode-01/logs \
-  ${data_dir}/hdfs-datanode-01/dfs/datanode \
-  ${data_dir}/yarn-resourcemanager-01/logs \
-  ${data_dir}/yarn-nodemanager-01/logs \
-  ${data_dir}/yarn-nodemanager-01/tmp/mapred \
-  ${data_dir}/mapred-historyserver-01/logs \
-  ${data_dir}/mapred-historyserver-01/tmp/mapred \
-  ${data_dir}/nifi-node-01/flow \
-  ${data_dir}/nifi-node-01/flow_archive \
-  ${data_dir}/nifi-node-01/templates \
-  ${data_dir}/nifi-node-01/logs \
-  ${data_dir}/nifi-node-01/database_repository \
-  ${data_dir}/nifi-node-01/flowfile_repository \
-  ${data_dir}/nifi-node-01/content_repository \
-  ${data_dir}/nifi-node-01/provenance_repository \
-  ${data_dir}/nifi-node-01/state \
-  ${data_dir}/nifi-node-01/work \
-  ${data_dir}/kafka-node-01/data
+  ${KBD_DATA_DIR}/zoo-node-01/data \
+  ${KBD_DATA_DIR}/zoo-node-01/datalog \
+  ${KBD_DATA_DIR}/zoo-node-01/logs \
+  ${KBD_DATA_DIR}/hdfs-namenode-01/logs \
+  ${KBD_DATA_DIR}/hdfs-namenode-01/dfs \
+  ${KBD_DATA_DIR}/hdfs-datanode-01/logs \
+  ${KBD_DATA_DIR}/hdfs-datanode-01/dfs \
+  ${KBD_DATA_DIR}/yarn-resourcemanager-01/logs \
+  ${KBD_DATA_DIR}/yarn-nodemanager-01/logs \
+  ${KBD_DATA_DIR}/yarn-nodemanager-01/tmp/mapred \
+  ${KBD_DATA_DIR}/mapred-historyserver-01/logs \
+  ${KBD_DATA_DIR}/mapred-historyserver-01/tmp/mapred \
+  ${KBD_DATA_DIR}/nifi-node-01/flow \
+  ${KBD_DATA_DIR}/nifi-node-01/flow_archive \
+  ${KBD_DATA_DIR}/nifi-node-01/templates \
+  ${KBD_DATA_DIR}/nifi-node-01/logs \
+  ${KBD_DATA_DIR}/nifi-node-01/database_repository \
+  ${KBD_DATA_DIR}/nifi-node-01/flowfile_repository \
+  ${KBD_DATA_DIR}/nifi-node-01/content_repository \
+  ${KBD_DATA_DIR}/nifi-node-01/provenance_repository \
+  ${KBD_DATA_DIR}/nifi-node-01/state \
+  ${KBD_DATA_DIR}/nifi-node-01/work \
+  ${KBD_DATA_DIR}/kafka-node-01/data
 
 
 init:

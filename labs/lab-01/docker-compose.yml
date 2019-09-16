@@ -7,9 +7,9 @@ services:
         hostname: zoo-node-01
         restart: always
         volumes:
-            - "../.kbd/zoo-node-01/data:/data"
-            - "../.kbd/zoo-node-01/datalog:/datalog"
-            - "../.kbd/zoo-node-01/logs:/logs"
+            - "${KBD_DATA_DIR}/zoo-node-01/data:/data"
+            - "${KBD_DATA_DIR}/zoo-node-01/datalog:/datalog"
+            - "${KBD_DATA_DIR}/zoo-node-01/logs:/logs"
         environment:
             ZOO_MY_ID: 1
         networks:
@@ -27,9 +27,8 @@ services:
             - "9870:9870"
         volumes:
             - "./etc/hadoop:/etc/hadoop"
-            - "../.kbd/hdfs-namenode-01/logs:/var/log/hadoop"
-            - "../.kbd/hdfs-namenode-01/dfs/namenode:/var/local/hadoop/dfs/namenode"
-            - "../.kbd/hdfs-namenode-01/dfs/journalnode:/var/local/hadoop/dfs/journalnode"
+            - "${KBD_DATA_DIR}/hdfs-namenode-01/logs:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/hdfs-namenode-01/dfs:/var/local/hadoop/dfs"
         networks:
             playground-net:
 
@@ -41,8 +40,8 @@ services:
             - "9864:9864"
         volumes:
             - "./etc/hadoop:/etc/hadoop"
-            - "../.kbd/hdfs-datanode-01/logs:/var/log/hadoop"
-            - "../.kbd/hdfs-datanode-01/dfs/datanode:/var/local/hadoop/dfs/datanode"
+            - "${KBD_DATA_DIR}/hdfs-datanode-01/logs:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/hdfs-datanode-01/dfs:/var/local/hadoop/dfs"
         networks:
             playground-net:
         depends_on:
@@ -57,15 +56,17 @@ services:
             - "8080:8080"
             - "12100-12200:12100-12200"
         volumes:
-#            - "./etc/nifi:/opt/nifi/nifi-current/conf"
+            - "./etc/nifi:/opt/nifi/nifi-current/conf"
             - "./etc/hadoop:/etc/hadoop"
             - "./etc/nifi/nifi.truststore:/labs/nifi/bitstamp.truststore"
-#            - "../.kbd/nifi-node-01/templates:/var/lib/nifi/templates"
-#            - "../.kbd/nifi-node-01/logs:/opt/nifi/nifi-current/logs"
-#            - "../.kbd/nifi-node-01/database_repository:/opt/nifi/nifi-current/database_repository"
-#            - "../.kbd/nifi-node-01/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository"
-#            - "../.kbd/nifi-node-01/content_repository:/opt/nifi/nifi-current/content_repository"
-#            - "../.kbd/nifi-node-01/provenance_repository:/opt/nifi/nifi-current/provenance_repository"
+            - "${KBD_DATA_DIR}/nifi-node-01/flow:/var/lib/nifi/flow"
+            - "${KBD_DATA_DIR}/nifi-node-01/flow_archive:/var/lib/nifi/flow_archive"
+            - "${KBD_DATA_DIR}/nifi-node-01/templates:/var/lib/nifi/templates"
+            - "${KBD_DATA_DIR}/nifi-node-01/logs:/opt/nifi/nifi-current/logs"
+            - "${KBD_DATA_DIR}/nifi-node-01/database_repository:/opt/nifi/nifi-current/database_repository"
+            - "${KBD_DATA_DIR}/nifi-node-01/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository"
+            - "${KBD_DATA_DIR}/nifi-node-01/content_repository:/opt/nifi/nifi-current/content_repository"
+            - "${KBD_DATA_DIR}/nifi-node-01/provenance_repository:/opt/nifi/nifi-current/provenance_repository"
         networks:
             playground-net:
 
@@ -83,7 +84,7 @@ services:
         ports:
             - 9092:9092
         volumes:
-            - "../.kbd/kafka-node-01/data:/var/lib/kafka/data"
+            - "${KBD_DATA_DIR}/kafka-node-01/data:/var/lib/kafka/data"
         depends_on:
             - zoo-node-01
         networks:
