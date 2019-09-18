@@ -181,3 +181,40 @@ Set event attribute | failure; unmatched
 11. Observe collected messages in queue on connection between **Bitstamp Realtime Data Ingestion** and **DebugFlow** by clicking "List queue" on connection.
 
 ![](images/012.png)
+
+### Excersice 3: Data Ingestion to Kafka and Hadoop Hdfs ###
+
+### Task 1: Sending messages to Kafka
+
+Create new Kafka topic
+```
+$ docker exec -it lab01_kafka-node-01_1 /usr/bin/kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic bitstamp
+```
+
+List existing Kafka topics
+```
+$ docker exec -it lab01_kafka-node-01_1 /usr/bin/kafka-topics --list --bootstrap-server localhost:9092
+```
+
+Consume Kafka Messages from Kafka topci
+```
+$ docker exec -it lab01_kafka-node-01_1 /usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic bitstamp --from-beginning
+```
+
+### Task 2: Putting the data to Hdfs
+
+Create a new directory in Hdfs
+
+```
+$ docker exec -it lab01_hdfs-namenode-01_1 hadoop fs -mkdir /bitstamp
+```
+
+Change folder permissions in Hdfs
+```
+$ docker exec -it lab01_hdfs-namenode-01_1 hadoop fs -chmod 777 /bitstamp
+```
+
+List the folder content in Hdfs
+```
+$ docker exec -it lab01_hdfs-namenode-01_1 hadoop fs -ls /
+```
