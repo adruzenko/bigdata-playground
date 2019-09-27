@@ -29,5 +29,5 @@ dirs= \
 init:
 	for dir in ${dirs} ; do \
 		mkdir -p $$dir ; \
-		chmod 777 $$dir ; \
+		chmod 777 -R $$dir ; \
 	done

@@ -31,6 +31,8 @@ services:
             - "./.kbd/hdfs-namenode-01/logs:/var/log/hadoop"
             - "./.kbd/hdfs-namenode-01/dfs/namenode:/var/local/hadoop/dfs/namenode"
             - "./.kbd/hdfs-namenode-01/dfs/journalnode:/var/local/hadoop/dfs/journalnode"
+            - "./../data/hadoop_session_01/word_count:/bdpc/data/word_count/input"
+            - "./../apps/mapreduce:/bdpc/apps/mapreduce"
         networks:
             playground-net:
                 ipv4_address: 172.100.0.10
