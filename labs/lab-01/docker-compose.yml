@@ -90,6 +90,17 @@ services:
         networks:
             playground-net:
 
+    python-dev-01:
+        image: python:3-stretch
+        hostname: python-dev-01
+        command: tail -f /dev/null
+        volumes:
+            - "./scripts:/scripts"
+        depends_on:
+            - kafka-node-01
+        networks:
+            playground-net:
+
 networks:
   playground-net:
     driver: bridge
