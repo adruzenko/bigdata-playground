@@ -32,10 +32,6 @@ then
   WORDS_NUMBER=5000000
 fi
 
-
-THIS_FILE=$(readlink -f "$0")
-THIS_PATH=$(dirname "$THIS_FILE")
-BASE_PATH=$(readlink -f "$THIS_PATH/../")
 APP_PATH="$THIS_PATH/text_generator.jar"
 
 echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"

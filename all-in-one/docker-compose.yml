@@ -18,6 +18,7 @@ services:
 
     # Apache Hadoop
 
+
     hdfs-namenode-01:
         image: adruzenko/kbd-hadoop3:3.2.0
         hostname: hdfs-namenode-01
@@ -97,6 +98,40 @@ services:
                 ipv4_address: 172.100.0.50
         depends_on:
             - yarn-resourcemanager-01
+
+    hdfs-edge-hadoop:
+        image: adruzenko/kbd-hadoop3:3.2.0
+        user: hadoop
+        hostname: hdfs-edge-hadoop
+        command: tail -f /dev/null
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "./../data/hadoop_session_01/word_count:/bdpc/data/word_count/input"
+            - "./../data/hadoop_session_01/word_count_gzip:/bdpc/data/word_count_gzip/input"
+            - "./../apps/mapreduce:/bdpc/apps/mapreduce"
+        networks:
+            playground-net:
+                ipv4_address: 172.100.0.08
+        depends_on:
+            - hdfs-namenode-01
+              #- hdfs-datanode-01 
+            - yarn-nodemanager-01
+            - mapred-historyserver-01  
+
+    hdfs-edge-root:
+        image: adruzenko/kbd-hadoop3:3.2.0
+        hostname: hdfs-edge-root
+        command: tail -f /dev/null
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+        networks:
+            playground-net:
+                ipv4_address: 172.100.0.09
+        depends_on:
+            - hdfs-namenode-01
+              #- hdfs-datanode-01 
+            - yarn-nodemanager-01
+            - mapred-historyserver-01
 
     # Apache NiFi
 
