@@ -109,6 +109,7 @@ services:
             - "./../data/hadoop_session_01/word_count:/bdpc/data/word_count/input"
             - "./../data/hadoop_session_01/word_count_gzip:/bdpc/data/word_count_gzip/input"
             - "./../apps/mapreduce:/bdpc/apps/mapreduce"
+            - "./../apps/scripts:/bdpc/scripts"
         networks:
             playground-net:
                 ipv4_address: 172.100.0.08

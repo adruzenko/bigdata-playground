@@ -1,0 +1,4 @@
+com/globallogic/bdpa/mapreduce/failed/Stuck$StuckMapper.class
+com/globallogic/bdpa/mapreduce/failed/Stuck$StuckCombiner.class
+com/globallogic/bdpa/mapreduce/failed/Stuck.class
+com/globallogic/bdpa/mapreduce/failed/Stuck$StuckReducer.class
