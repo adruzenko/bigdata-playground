@@ -1,12 +1,11 @@
-.DS_Store
-.vscode/*
-.venv
-.kbd
-.vagrant
 *.iml
 *.ipr
 *.iws
+target
 .project
+.settings/
 .idea/*
 .idea
 workbench.xmi
+target/
+.classpath

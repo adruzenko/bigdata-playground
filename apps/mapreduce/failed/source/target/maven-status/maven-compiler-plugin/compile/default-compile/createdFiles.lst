@@ -1,0 +1,4 @@
+com/globallogic/bdpa/mapreduce/failed/Failed$FailableCombiner.class
+com/globallogic/bdpa/mapreduce/failed/Failed$FailableReducer.class
+com/globallogic/bdpa/mapreduce/failed/Failed.class
+com/globallogic/bdpa/mapreduce/failed/Failed$FailableMapper.class
