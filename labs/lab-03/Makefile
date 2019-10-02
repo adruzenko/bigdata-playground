@@ -8,7 +8,10 @@ dirs= \
   ${KBD_DATA_DIR}/yarn-nodemanager-01/logs \
   ${KBD_DATA_DIR}/yarn-nodemanager-01/tmp/mapred \
   ${KBD_DATA_DIR}/mapred-historyserver-01/logs \
-  ${KBD_DATA_DIR}/mapred-historyserver-01/tmp/mapred
+  ${KBD_DATA_DIR}/mapred-historyserver-01/tmp/mapred \
+  ${KBD_DATA_DIR}/myql-node-01/data \
+  ${KBD_DATA_DIR}/hive-node-01/logs/hadoop \
+  ${KBD_DATA_DIR}/hive-node-01/tmp/hive_temp
 
 init:
 	for dir in ${dirs} ; do \

@@ -69,7 +69,7 @@ services:
         volumes:
             - "./etc/hadoop:/etc/hadoop"
             - "${KBD_DATA_DIR}/mapred-historyserver-01/logs:/var/log/hadoop"
-            - "${KBD_DATA_DIR}mapred-historyserver-01/tmp/mapred:/tmp/mapred"
+            - "${KBD_DATA_DIR}/mapred-historyserver-01/tmp/mapred:/tmp/mapred"
         networks:
             playground-net:
         depends_on:
@@ -94,6 +94,37 @@ services:
             - yarn-resourcemanager-01
             - yarn-nodemanager-01
             - mapred-historyserver-01
+
+    # MySQL
+    mysql-node-01:
+        image: mysql:8.0.17
+        hostname: mysql-node-01
+        ports:
+          - "33061:3306"
+        volumes:
+            - ${KBD_DATA_DIR}/myql-node-01/data:/var/lib/mysql
+            - ./etc/mysql/init:/docker-entrypoint-initdb.d
+        environment:
+            MYSQL_ROOT_USER: root
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_USER: bd
+            MYSQL_PASSWORD: playground
+            MYSQL_DATABASE: playground
+        networks:
+            playground-net:
+
+    # Hive
+    hive-node-01:
+        image: adruzenko/kbd-hive3:3.1.2
+        hostname: hive-node-01
+        command: tail -f /dev/null
+        volumes:
+            - ./etc/hive:/etc/hive
+            - "./etc/hadoop:/etc/hadoop"
+            - "${KBD_DATA_DIR}/hive-node-01/logs/hadoop:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/hive-node-01/tmp/hive_temp:/tmp/hive_temp"
+        networks:
+            playground-net:
 
 networks:
   playground-net:
