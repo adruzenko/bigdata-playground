@@ -18,6 +18,8 @@ gosu hdfs hdfs dfs -chmod 777 /tmp/hive_temp
 
 gosu hdfs hdfs dfs -mkdir -p /user/hive
 gosu hdfs hdfs dfs -chown hive:hive /user/hive
+gosu hdfs hdfs dfs -mkdir -p /user/hue
+gosu hdfs hdfs dfs -chown hive:hive /user/hue
 
 gosu hive init-hive-dfs.sh
 schematool -dbType mysql -initSchema

@@ -124,9 +124,47 @@ services:
             - "./etc/hadoop:/etc/hadoop"
             - "./scripts/hive-init.sh:/usr/local/bin/hive-init.sh"
             - "${KBD_DATA_DIR}/hive-node-01/logs/hadoop:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/hive-node-01/logs/hive:/var/log/hive"
             - "${KBD_DATA_DIR}/hive-node-01/tmp/hive_temp:/tmp/hive_temp"
         networks:
             playground-net:
+        depends_on:
+            - mysql-node-01
+
+    hive-server-01:
+        image: adruzenko/kbd-hive3:3.1.2
+        hostname: hive-server-01
+        user: hive
+        command: hiveserver2
+        ports:
+            - 10002:10002
+        volumes:
+            - ./etc/hive:/etc/hive
+            - "./etc/hadoop:/etc/hadoop"
+            - "./scripts/hive-init.sh:/usr/local/bin/hive-init.sh"
+            - "${KBD_DATA_DIR}/hive-server-01/logs/hadoop:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/hive-server-01/logs/hive:/var/log/hive"
+            - "${KBD_DATA_DIR}/hive-server-01/tmp/hive_temp:/tmp/hive_temp"
+        networks:
+            playground-net:
+        depends_on:
+            - mysql-node-01
+
+    # Hue
+    hue-node-01:
+        image: gethue/hue:4.5.0
+        hostname: hue-node-01
+        ports:
+            - "18888:8888"
+        volumes:
+            - ./etc/hue/hue.ini:/usr/share/hue/desktop/conf/z-hue.ini
+            - ./etc/hadoop:/etc/hadoop
+            - ./etc/hive:/etc/hive
+        networks:
+            playground-net:
+        depends_on:
+            - mysql-node-01
+            - hive-server-01
 
 networks:
   playground-net:
