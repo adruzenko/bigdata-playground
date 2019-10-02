@@ -117,10 +117,12 @@ services:
     hive-node-01:
         image: adruzenko/kbd-hive3:3.1.2
         hostname: hive-node-01
+        user: hive
         command: tail -f /dev/null
         volumes:
             - ./etc/hive:/etc/hive
             - "./etc/hadoop:/etc/hadoop"
+            - "./scripts/hive-init.sh:/usr/local/bin/hive-init.sh"
             - "${KBD_DATA_DIR}/hive-node-01/logs/hadoop:/var/log/hadoop"
             - "${KBD_DATA_DIR}/hive-node-01/tmp/hive_temp:/tmp/hive_temp"
         networks:

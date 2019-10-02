@@ -1,0 +1,23 @@
+#!/bin/sh
+
+gosu hdfs hdfs dfs -mkdir /tmp
+gosu hdfs hdfs dfs -chmod 777 /tmp
+
+gosu hdfs hdfs dfs -mkdir /mapred
+gosu hdfs hdfs dfs -chmod 777 /mapred
+
+gosu hdfs hdfs dfs -mkdir /mapred/staging
+gosu hdfs hdfs dfs -chmod 777 /mapred/staging
+
+gosu hdfs hdfs dfs -mkdir  /mapred/staging/history
+gosu hdfs hdfs dfs -chmod 777 /mapred/staging/history
+
+gosu hdfs hdfs dfs -mkdir /tmp/hive_temp
+gosu hdfs hdfs dfs -chown hive:hadoop /tmp/hive_temp
+gosu hdfs hdfs dfs -chmod 777 /tmp/hive_temp
+
+gosu hdfs hdfs dfs -mkdir -p /user/hive
+gosu hdfs hdfs dfs -chown hive:hive /user/hive
+
+gosu hive init-hive-dfs.sh
+schematool -dbType mysql -initSchema
