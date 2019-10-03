@@ -23,7 +23,7 @@ gosu hdfs hdfs dfs -chown hive:hive /user/hue
 
 gosu hdfs init-hive-dfs.sh
 
-gosu hdfs hdfs chown -R hive:hive /user/hive
+gosu hdfs hdfs dfs -chown -R hive:hive /user/hive
 
 schematool -dbType mysql -initSchema
 
