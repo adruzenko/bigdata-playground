@@ -21,5 +21,7 @@ gosu hdfs hdfs dfs -chown hive:hive /user/hive
 gosu hdfs hdfs dfs -mkdir -p /user/hue
 gosu hdfs hdfs dfs -chown hive:hive /user/hue
 
-gosu hive init-hive-dfs.sh
+gosu hdfs init-hive-dfs.sh
 schematool -dbType mysql -initSchema
+
+gosu root chmod -R 777 /var/log/hadoop
