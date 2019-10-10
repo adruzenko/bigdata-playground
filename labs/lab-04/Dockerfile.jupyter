@@ -1,6 +1,6 @@
 FROM jupyter/pyspark-notebook
 
-ENV SPARK_PYTHON_VERSION=3.6
+ENV SPARK_PYTHON_VERSION=3.6.9
 
 RUN conda create -n python-${SPARK_PYTHON_VERSION} -y python=${SPARK_PYTHON_VERSION}
 RUN bash -c "source /opt/conda/etc/profile.d/conda.sh \
@@ -9,6 +9,6 @@ RUN bash -c "source /opt/conda/etc/profile.d/conda.sh \
 
 RUN bash -c "source /opt/conda/etc/profile.d/conda.sh \
     && conda activate python-${SPARK_PYTHON_VERSION} \
-    && python -m ipykernel install --user --name python-3.6 --display-name \"Python ${SPARK_PYTHON_VERSION} (Spark)\" \
-    && mv $HOME/.local/share/jupyter/kernels/python-3.6/ $CONDA_DIR/share/jupyter/kernels/"
+    && python -m ipykernel install --user --name python-${SPARK_PYTHON_VERSION} --display-name \"Python ${SPARK_PYTHON_VERSION} (Spark)\" \
+    && mv $HOME/.local/share/jupyter/kernels/python-${SPARK_PYTHON_VERSION}/ $CONDA_DIR/share/jupyter/kernels/"
 
