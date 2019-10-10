@@ -20,14 +20,31 @@ services:
       environment:
         - SPARK_MODE=worker
         - SPARK_MASTER_URL=spark://spark-master-01:7077
-        - SPARK_WORKER_MEMORY=1G
-        - SPARK_WORKER_CORES=1
+        - SPARK_WORKER_MEMORY=2G
+        - SPARK_WORKER_CORES=2
         - SPARK_RPC_AUTHENTICATION_ENABLED=no
         - SPARK_RPC_ENCRYPTION_ENABLED=no
         - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
         - SPARK_SSL_ENABLED=no
       ports:
         - 9091:8081
+      networks:
+          playground-net:
+
+    spark-worker-02:
+      image: bitnami/spark:2
+      hostname: spark-worker-02
+      environment:
+        - SPARK_MODE=worker
+        - SPARK_MASTER_URL=spark://spark-master-01:7077
+        - SPARK_WORKER_MEMORY=2G
+        - SPARK_WORKER_CORES=2
+        - SPARK_RPC_AUTHENTICATION_ENABLED=no
+        - SPARK_RPC_ENCRYPTION_ENABLED=no
+        - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+        - SPARK_SSL_ENABLED=no
+      ports:
+        - 9092:8081
       networks:
           playground-net:
 
