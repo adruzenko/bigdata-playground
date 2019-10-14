@@ -1,0 +1,27 @@
+============================================================================================
+
+> hadoop fs -ls /bdpc/data/hdfs/source/2019/*/*/*
+
+> hadoop fs -ls /bdpc/data/hdfs/source/2019/{01,04}/{01}/01/file-0000
+
+> hadoop fs -du /bdpc/data/hdfs/source/2019
+
+> hadoop fs -du -s /bdpc/data/hdfs/source/2019/01/*/01/*
+
+> hadoop fs -du -s /bdpc/data/hdfs/source/2019/01/*/01
+
+> hadoop fs -text /bdpc/data/hdfs/source/2019/01/01/01/file-0000 | more
+
+> hadoop fs -rm -R /bdpc
+
+============================================================================================
+
+> hadoop fs -mkdir -p /bdpc/word_count
+
+> hadoop fs -put /bdpc/data/word_count_gzip/input /bdpc/word_count
+
+> hadoop fs -ls /bdpc/word_count/input
+
+> hadoop fs -cat /bdpc/word_count/input/file_0001.txt.gz
+
+

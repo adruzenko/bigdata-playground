@@ -1,0 +1,68 @@
+version: '3.5'
+services:
+    spark-master-01:
+      image: bitnami/spark:2.4.4
+      hostname: spark-master-01
+      environment:
+          - SPARK_MODE=master
+          - SPARK_RPC_AUTHENTICATION_ENABLED=no
+          - SPARK_RPC_ENCRYPTION_ENABLED=no
+          - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+          - SPARK_SSL_ENABLED=no
+      ports:
+          - "9090:8080"
+      networks:
+          playground-net:
+
+    spark-worker-01:
+      image: bitnami/spark:2
+      hostname: spark-worker-01
+      environment:
+        - SPARK_MODE=worker
+        - SPARK_MASTER_URL=spark://spark-master-01:7077
+        - SPARK_WORKER_MEMORY=2G
+        - SPARK_WORKER_CORES=2
+        - SPARK_RPC_AUTHENTICATION_ENABLED=no
+        - SPARK_RPC_ENCRYPTION_ENABLED=no
+        - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+        - SPARK_SSL_ENABLED=no
+      ports:
+        - 9091:8081
+      networks:
+          playground-net:
+
+    spark-worker-02:
+      image: bitnami/spark:2
+      hostname: spark-worker-02
+      environment:
+        - SPARK_MODE=worker
+        - SPARK_MASTER_URL=spark://spark-master-01:7077
+        - SPARK_WORKER_MEMORY=2G
+        - SPARK_WORKER_CORES=2
+        - SPARK_RPC_AUTHENTICATION_ENABLED=no
+        - SPARK_RPC_ENCRYPTION_ENABLED=no
+        - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+        - SPARK_SSL_ENABLED=no
+      ports:
+        - 9092:8081
+      networks:
+          playground-net:
+
+    jupyter-node-01:
+      build:
+        context: .
+        dockerfile: ./Dockerfile.jupyter
+      hostname: jupyter-node-01
+      ports:
+        - 4040:4040
+        - 9999:8888
+      networks:
+        playground-net:
+
+networks:
+  playground-net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.104.0.0/24

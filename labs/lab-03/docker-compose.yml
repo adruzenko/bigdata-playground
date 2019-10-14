@@ -1,0 +1,198 @@
+version: '3.5'
+services:
+
+    # Apache Hadoop
+
+    hdfs-namenode-01:
+        image: adruzenko/kbd-hadoop3:3.2.0
+        hostname: hdfs-namenode-01
+        command: hadoop namenode
+        environment:
+            - DFS_NAMENODE_NAME_DIR=/var/local/hadoop/dfs/namenode
+        ports:
+            - "9870:9870"
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "${KBD_DATA_DIR}/hdfs-namenode-01/logs:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/hdfs-namenode-01/dfs:/var/local/hadoop/dfs"
+        networks:
+            playground-net:
+
+    hdfs-datanode-01:
+        image: adruzenko/kbd-hadoop3:3.2.0
+        hostname: hdfs-datanode-01
+        command: hadoop datanode
+        ports:
+            - "9864:9864"
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "${KBD_DATA_DIR}/hdfs-datanode-01/logs:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/hdfs-datanode-01/dfs:/var/local/hadoop/dfs"
+        networks:
+            playground-net:
+        depends_on:
+            - hdfs-namenode-01
+
+    yarn-resourcemanager-01:
+        image: adruzenko/kbd-hadoop3:3.2.0
+        hostname: yarn-resourcemanager-01
+        command: hadoop resourcemanager
+        ports:
+            - "8088:8088"
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "${KBD_DATA_DIR}/yarn-resourcemanager-01/logs:/var/log/hadoop"
+        networks:
+            playground-net:
+
+    yarn-nodemanager-01:
+        image: adruzenko/kbd-hadoop3:3.2.0
+        hostname: yarn-nodemanager-01
+        command: hadoop nodemanager
+        ports:
+            - "8042:8042"
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "${KBD_DATA_DIR}/yarn-nodemanager-01/logs:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/yarn-nodemanager-01/tmp/mapred:/tmp/mapred"
+        networks:
+            playground-net:
+        depends_on:
+            - yarn-resourcemanager-01
+
+    mapred-historyserver-01:
+        image: adruzenko/kbd-hadoop3:3.2.0
+        hostname: mapred-historyserver-01
+        command: hadoop historyserver
+        ports:
+            - "19888:19888"
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "${KBD_DATA_DIR}/mapred-historyserver-01/logs:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/mapred-historyserver-01/tmp/mapred:/tmp/mapred"
+        networks:
+            playground-net:
+        depends_on:
+            - yarn-resourcemanager-01
+
+    hdfs-edge-hadoop:
+        image: adruzenko/kbd-hadoop3:3.2.0
+        user: hadoop
+        hostname: hdfs-edge-hadoop
+        command: tail -f /dev/null
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "./../../data/hadoop_session_01/word_count:/bdpc/data/word_count/input"
+            - "./../../data/hadoop_session_01/word_count_gzip:/bdpc/data/word_count_gzip/input"
+            - "./../../apps/mapreduce:/bdpc/apps/mapreduce"
+            - "./../../apps/scripts:/bdpc/scripts"
+        networks:
+            playground-net:
+        depends_on:
+            - hdfs-namenode-01
+            - hdfs-datanode-01
+            - yarn-resourcemanager-01
+            - yarn-nodemanager-01
+            - mapred-historyserver-01
+
+    # MySQL
+    mysql-node-01:
+        image: mysql:8.0.17
+        hostname: mysql-node-01
+        ports:
+          - "33061:3306"
+        volumes:
+            - ${KBD_DATA_DIR}/myql-node-01/data:/var/lib/mysql
+            - ./etc/mysql/init:/docker-entrypoint-initdb.d
+        environment:
+            MYSQL_ROOT_USER: root
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_USER: bd
+            MYSQL_PASSWORD: playground
+            MYSQL_DATABASE: playground
+        networks:
+            playground-net:
+
+    # Hive
+    hive-node-01:
+        image: adruzenko/kbd-hive3:3.1.2
+        hostname: hive-node-01
+        user: hive
+        command: tail -f /dev/null
+        volumes:
+            - ./etc/hive:/etc/hive
+            - "./etc/hadoop:/etc/hadoop"
+            - "./scripts/hive-init.sh:/usr/local/bin/hive-init.sh"
+            - "${KBD_DATA_DIR}/hive-node-01/logs/hadoop:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/hive-node-01/logs/hive:/var/log/hive"
+            - "${KBD_DATA_DIR}/hive-node-01/tmp/hive_temp:/tmp/hive_temp"
+        networks:
+            playground-net:
+        depends_on:
+            - mysql-node-01
+
+    hive-server-01:
+        image: adruzenko/kbd-hive3:3.1.2
+        hostname: hive-server-01
+        user: hive
+        command: hiveserver2
+        ports:
+            - 10002:10002
+        volumes:
+            - ./etc/hive:/etc/hive
+            - "./etc/hadoop:/etc/hadoop"
+            - "./scripts/hive-init.sh:/usr/local/bin/hive-init.sh"
+            - "${KBD_DATA_DIR}/hive-server-01/logs/hadoop:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/hive-server-01/logs/hive:/var/log/hive"
+            - "${KBD_DATA_DIR}/hive-server-01/tmp/hive_temp:/tmp/hive_temp"
+        networks:
+            playground-net:
+        depends_on:
+            - mysql-node-01
+
+    # Hue
+    hue-node-01:
+        image: gethue/hue:4.5.0
+        hostname: hue-node-01
+        ports:
+            - "18888:8888"
+        volumes:
+            - ./etc/hue/hue.ini:/usr/share/hue/desktop/conf/z-hue.ini
+            - ./etc/hadoop:/etc/hadoop
+            - ./etc/hive:/etc/hive
+        networks:
+            playground-net:
+        depends_on:
+            - mysql-node-01
+            - hive-server-01
+
+    # Apache NiFi
+
+    nifi-node-01:
+        image: apache/nifi:1.9.2
+        hostname: nifi-node-01
+        ports:
+            - "8080:8080"
+            - "12100-12200:12100-12200"
+        volumes:
+            - "./etc/nifi:/opt/nifi/nifi-current/conf"
+            - "./etc/hadoop:/etc/hadoop"
+            - "./etc/nifi/nifi.truststore:/labs/nifi/bitstamp.truststore"
+            - "${KBD_DATA_DIR}/nifi-node-01/flow:/var/lib/nifi/flow"
+            - "${KBD_DATA_DIR}/nifi-node-01/flow_archive:/var/lib/nifi/flow_archive"
+            - "${KBD_DATA_DIR}/nifi-node-01/templates:/var/lib/nifi/templates"
+            - "${KBD_DATA_DIR}/nifi-node-01/logs:/opt/nifi/nifi-current/logs"
+            - "${KBD_DATA_DIR}/nifi-node-01/database_repository:/opt/nifi/nifi-current/database_repository"
+            - "${KBD_DATA_DIR}/nifi-node-01/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository"
+            - "${KBD_DATA_DIR}/nifi-node-01/content_repository:/opt/nifi/nifi-current/content_repository"
+            - "${KBD_DATA_DIR}/nifi-node-01/provenance_repository:/opt/nifi/nifi-current/provenance_repository"
+        networks:
+            playground-net:
+
+networks:
+  playground-net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.103.0.0/24
