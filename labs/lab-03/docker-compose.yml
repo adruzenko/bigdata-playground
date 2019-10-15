@@ -97,7 +97,8 @@ services:
 
     # MySQL
     mysql-node-01:
-        image: mysql:8.0.17
+#        image: mysql:8.0.17
+        image: mysql:latest
         hostname: mysql-node-01
         ports:
           - "33061:3306"
@@ -137,7 +138,8 @@ services:
         user: hive
         command: hiveserver2
         ports:
-            - 10002:10002
+            - 10000:10000
+            - 9083:9083
         volumes:
             - ./etc/hive:/etc/hive
             - "./etc/hadoop:/etc/hadoop"
@@ -154,10 +156,15 @@ services:
     hue-node-01:
         image: gethue/hue:4.5.0
         hostname: hue-node-01
+#        command: bash -c "/etc/docker/wait-for-it.sh mysql-node-01:3306 && sh /usr/share/hue/startup.sh"
+#        command: ["/etc/docker/wait-for-it.sh", "mysql-node-01:3306", "--", "./startup.sh"]
+#        command: bash -c "/etc/docker/wait-for-it.sh mysql-node-01:3306 -s -t 10 -- ./startup.sh"
+        command: bash -c "sleep 120 && ./startup.sh"
         ports:
             - "18888:8888"
         volumes:
             - ./etc/hue/hue.ini:/usr/share/hue/desktop/conf/z-hue.ini
+#            - ./etc/hue/wait-for-it.sh:/etc/docker/wait-for-it.sh
             - ./etc/hadoop:/etc/hadoop
             - ./etc/hive:/etc/hive
         networks:
@@ -177,6 +184,7 @@ services:
         volumes:
             - "./etc/nifi:/opt/nifi/nifi-current/conf"
             - "./etc/hadoop:/etc/hadoop"
+            - "./etc/hive:/etc/hive"
             - "./etc/nifi/nifi.truststore:/labs/nifi/bitstamp.truststore"
             - "${KBD_DATA_DIR}/nifi-node-01/flow:/var/lib/nifi/flow"
             - "${KBD_DATA_DIR}/nifi-node-01/flow_archive:/var/lib/nifi/flow_archive"

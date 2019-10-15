@@ -38,6 +38,14 @@
     <value>/tmp/hive_tmp</value>
     <description>HDFS root scratch dir for Hive jobs which gets created with write all (733) permission</description>
   </property>
+  <property>
+    <name>hive.server2.thrift.port</name>
+    <value>10000</value>
+  </property>
+<!--  <property>
+    <name>hive.metastore.uris</name>
+    <value>thrift://localhost:9083</value>
+  </property>-->
 </configuration>
 
 <!--
