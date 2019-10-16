@@ -11,6 +11,7 @@ dirs= \
   ${KBD_DATA_DIR}/yarn-nodemanager-02/logs \
   ${KBD_DATA_DIR}/yarn-nodemanager-02/tmp/mapred \
   ${KBD_DATA_DIR}/jupyter-node-01/home \
+  ${KBD_DATA_DIR}/jupyter-node-01/home/jovyan \
   ${KBD_DATA_DIR}/spark-master-01/work \
   ${KBD_DATA_DIR}/spark-master-01/tmp \
   ${KBD_DATA_DIR}/spark-master-01/logs/spark \
