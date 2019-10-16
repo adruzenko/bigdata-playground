@@ -28,6 +28,10 @@ services:
         - SPARK_SSL_ENABLED=no
       ports:
         - 9091:8081
+      volumes:
+        - "./../../samples:/bdpc/data/input/samples"
+        - "./data/input:/bdpc/data/input/user"
+        - "./data/output:/bdpc/data/output"
       networks:
           playground-net:
 
@@ -45,6 +49,10 @@ services:
         - SPARK_SSL_ENABLED=no
       ports:
         - 9092:8081
+      volumes:
+        - "./../../samples:/bdpc/data/input/samples"
+        - "./data/input:/bdpc/data/input/user"      
+        - "./data/output:/bdpc/data/output"
       networks:
           playground-net:
 
@@ -56,6 +64,10 @@ services:
       ports:
         - 4040:4040
         - 9999:8888
+      volumes:
+        - "./../../samples:/bdpc/data/input/samples"
+        - "./data/input:/bdpc/data/input/user"
+        - "./data/output:/bdpc/data/output"          
       networks:
         playground-net:
 
