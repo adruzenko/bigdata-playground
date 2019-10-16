@@ -1,5 +1,5 @@
 #!/bin/sh
 
-CONTAINER=lab03_hive-node-01_1
+CONTAINER=lab-04_hive-node-01_1
 
 docker exec -ti $CONTAINER hive

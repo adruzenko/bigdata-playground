@@ -42,10 +42,10 @@
     <name>hive.server2.thrift.port</name>
     <value>10000</value>
   </property>
-<!--  <property>
+  <property>
     <name>hive.metastore.uris</name>
-    <value>thrift://localhost:9083</value>
-  </property>-->
+    <value>thrift://hive-metastore-01:9083</value>
+  </property>
 </configuration>
 
 <!--

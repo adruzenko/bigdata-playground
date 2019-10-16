@@ -29,6 +29,8 @@ dirs= \
   ${KBD_DATA_DIR}/hive-node-01/tmp/hive_temp \
   ${KBD_DATA_DIR}/hive-server-01/logs/hadoop \
   ${KBD_DATA_DIR}/hive-server-01/tmp/hive_temp \
+  ${KBD_DATA_DIR}/hive-metastore-01/logs/hadoop \
+  ${KBD_DATA_DIR}/hive-metastore-01/tmp/hive_temp \
   ${PWD}/data/input \
   ${PWD}/data/output
 
