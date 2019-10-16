@@ -1,0 +1,285 @@
+version: '3.5'
+services:
+    spark-master-01:
+      image: bitnami/spark:2.4.4
+      hostname: spark-master-01
+      entrypoint: /bin/bash
+      command: start-master.sh
+      user: 995:999
+      environment:
+        - SPARK_CONF_DIR=/etc/spark
+        - HADOOP_CONF_DIR=/etc/hadoop
+        - SPARK_WORKDIR=/var/lib/spark
+        - SPARK_LOGDIR=/var/log/spark
+        - SPARK_TMPDIR=/tmp/spark
+        - HADOOP_LOG_DIR=/var/log/hadoop
+        - SPARK_NO_DAEMONIZE=true
+      volumes:
+        - "./etc/spark:/etc/spark"
+        - "./etc/hadoop:/etc/hadoop"
+        - "./etc/group:/etc/group"
+        - "./etc/passwd:/etc/passwd"
+        - "${KBD_DATA_DIR}/spark-master-01/work:/var/lib/spark"
+        - "${KBD_DATA_DIR}/spark-master-01/tmp:/tmp/spark"
+        - "${KBD_DATA_DIR}/spark-master-01/logs/spark:/var/log/spark"
+        - "${KBD_DATA_DIR}/spark-master-01/logs/hadoop:/var/log/hadoop"
+      ports:
+          - "9090:8080"
+      networks:
+          playground-net:
+
+    spark-worker-01:
+      image: bitnami/spark:2
+      hostname: spark-worker-01
+      entrypoint: /bin/bash
+      command: start-slave.sh spark://spark-master-01:7077
+      user: root
+      environment:
+        - SPARK_CONF_DIR=/etc/spark
+        - HADOOP_CONF_DIR=/etc/hadoop
+        - SPARK_WORKDIR=/var/lib/spark
+        - SPARK_LOGDIR=/var/log/spark
+        - SPARK_TMPDIR=/tmp/spark
+        - HADOOP_LOG_DIR=/var/log/hadoop
+        - SPARK_NO_DAEMONIZE=true
+      volumes:
+        - "./etc/spark:/etc/spark"
+        - "./etc/hadoop:/etc/hadoop"
+        - "./etc/group:/etc/group"
+        - "./etc/passwd:/etc/passwd"
+        - "${KBD_DATA_DIR}/spark-worker-01/work:/var/lib/spark"
+        - "${KBD_DATA_DIR}/spark-worker-01/tmp:/tmp/spark"
+        - "${KBD_DATA_DIR}/spark-worker-01/logs/spark:/var/log/spark"
+        - "${KBD_DATA_DIR}/spark-worker-01/logs/hadoop:/var/log/hadoop"
+      ports:
+        - 9091:8081
+      volumes:
+        - "./../../samples:/bdpc/data/input/samples"
+        - "./data/input:/bdpc/data/input/user"
+        - "./data/output:/bdpc/data/output"
+      networks:
+          playground-net:
+
+    spark-worker-02:
+      image: bitnami/spark:2
+      hostname: spark-worker-02
+      entrypoint: /bin/bash
+      command: start-slave.sh spark://spark-master-01:7077
+      user: root
+      environment:
+        - SPARK_CONF_DIR=/etc/spark
+        - HADOOP_CONF_DIR=/etc/hadoop
+        - SPARK_WORKDIR=/var/lib/spark
+        - SPARK_LOGDIR=/var/log/spark
+        - SPARK_TMPDIR=/tmp/spark
+        - HADOOP_LOG_DIR=/var/log/hadoop
+        - SPARK_NO_DAEMONIZE=true
+      volumes:
+        - "./etc/spark:/etc/spark"
+        - "./etc/hadoop:/etc/hadoop"
+        - "./etc/group:/etc/group"
+        - "./etc/passwd:/etc/passwd"
+        - "${KBD_DATA_DIR}/spark-worker-02/work:/var/lib/spark"
+        - "${KBD_DATA_DIR}/spark-worker-02/tmp:/tmp/spark"
+        - "${KBD_DATA_DIR}/spark-worker-02/logs/spark:/var/log/spark"
+        - "${KBD_DATA_DIR}/spark-worker-02/logs/hadoop:/var/log/hadoop"
+      ports:
+        - 9092:8081
+      volumes:
+        - "./../../samples:/bdpc/data/input/samples"
+        - "./data/input:/bdpc/data/input/user"
+        - "./data/output:/bdpc/data/output"
+      networks:
+          playground-net:
+
+    spark-history-01:
+      image: bitnami/spark:2
+      hostname: spark-history-01
+      entrypoint: /bin/bash
+      command: start-history-server.sh
+      user: 995:999
+      environment:
+        - SPARK_CONF_DIR=/etc/spark
+        - HADOOP_CONF_DIR=/etc/hadoop
+        - SPARK_NO_DAEMONIZE=true
+      ports:
+        - 18080:18080
+      volumes:
+        - "./etc/spark:/etc/spark"
+        - "./etc/hadoop:/etc/hadoop"
+        - "./etc/group:/etc/group"
+        - "./etc/passwd:/etc/passwd"
+      networks:
+        playground-net:
+      depends_on:
+        - hdfs-namenode-01
+
+    # Apache Hadoop
+
+    hdfs-namenode-01:
+        image: adruzenko/kbd-hadoop3:3.2.0
+        hostname: hdfs-namenode-01
+        command: hadoop namenode
+        environment:
+            - DFS_NAMENODE_NAME_DIR=/var/local/hadoop/dfs/namenode
+        ports:
+            - "9870:9870"
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "./etc/group:/etc/group"
+            - "./etc/passwd:/etc/passwd"
+            - "${KBD_DATA_DIR}/hdfs-namenode-01/logs:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/hdfs-namenode-01/dfs:/var/local/hadoop/dfs"
+        networks:
+            playground-net:
+
+    hdfs-datanode-01:
+        image: adruzenko/kbd-hadoop3:3.2.0
+        hostname: hdfs-datanode-01
+        command: hadoop datanode
+        ports:
+            - "9864:9864"
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "./etc/group:/etc/group"
+            - "./etc/passwd:/etc/passwd"
+            - "${KBD_DATA_DIR}/hdfs-datanode-01/logs:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/hdfs-datanode-01/dfs:/var/local/hadoop/dfs"
+        networks:
+            playground-net:
+        depends_on:
+            - hdfs-namenode-01
+
+    yarn-resourcemanager-01:
+        image: adruzenko/kbd-hadoop3:3.2.0
+        hostname: yarn-resourcemanager-01
+        command: hadoop resourcemanager
+        ports:
+            - "8088:8088"
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "${KBD_DATA_DIR}/yarn-resourcemanager-01/logs:/var/log/hadoop"
+        networks:
+            playground-net:
+
+    yarn-nodemanager-01:
+        image: adruzenko/kbd-hadoop3:3.2.0
+        hostname: yarn-nodemanager-01
+        command: hadoop nodemanager
+        ports:
+            - "8042:8042"
+        volumes:
+            - "./etc/hadoop:/etc/hadoop"
+            - "${KBD_DATA_DIR}/yarn-nodemanager-01/logs:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/yarn-nodemanager-01/tmp/mapred:/tmp/mapred"
+        networks:
+            playground-net:
+        depends_on:
+            - yarn-resourcemanager-01
+
+    # MySQL
+    mysql-node-01:
+        image: mysql:8.0.17
+        hostname: mysql-node-01
+        ports:
+          - "33061:3306"
+        volumes:
+            - ${KBD_DATA_DIR}/myql-node-01/data:/var/lib/mysql
+            - ./etc/mysql/init:/docker-entrypoint-initdb.d
+        environment:
+            MYSQL_ROOT_USER: root
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_USER: bd
+            MYSQL_PASSWORD: playground
+            MYSQL_DATABASE: playground
+        networks:
+            playground-net:
+
+    # Hive
+    hive-node-01:
+        image: adruzenko/kbd-hive3:3.1.2
+        hostname: hive-node-01
+        user: hive
+        command: tail -f /dev/null
+        volumes:
+            - "./etc/hive:/etc/hive"
+            - "./etc/hadoop:/etc/hadoop"
+            - "./scripts/hive-init.sh:/usr/local/bin/hive-init.sh"
+            - "${KBD_DATA_DIR}/hive-node-01/logs/hadoop:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/hive-node-01/logs/hive:/var/log/hive"
+            - "${KBD_DATA_DIR}/hive-node-01/tmp/hive_temp:/tmp/hive_temp"
+        networks:
+            playground-net:
+        depends_on:
+            - mysql-node-01
+
+    hive-server-01:
+        image: adruzenko/kbd-hive3:3.1.2
+        hostname: hive-server-01
+        user: hive
+        command: hiveserver2
+        ports:
+            - 10000:10000
+        volumes:
+            - "./etc/hive:/etc/hive"
+            - "./etc/hadoop:/etc/hadoop"
+            - "./scripts/hive-init.sh:/usr/local/bin/hive-init.sh"
+            - "${KBD_DATA_DIR}/hive-server-01/logs/hadoop:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/hive-server-01/logs/hive:/var/log/hive"
+            - "${KBD_DATA_DIR}/hive-server-01/tmp/hive_temp:/tmp/hive_temp"
+        networks:
+            playground-net:
+        depends_on:
+            - mysql-node-01
+
+    hive-metastore-01:
+        image: adruzenko/kbd-hive3:3.1.2
+        hostname: hive-metastore-01
+        user: hive
+        command: hive --service metastore
+        ports:
+            - 9083:9083
+        volumes:
+            - ./etc/hive:/etc/hive
+            - "./etc/hadoop:/etc/hadoop"
+            - "./scripts/hive-init.sh:/usr/local/bin/hive-init.sh"
+            - "${KBD_DATA_DIR}/hive-metastore-01/logs/hadoop:/var/log/hadoop"
+            - "${KBD_DATA_DIR}/hive-metastore-01/logs/hive:/var/log/hive"
+            - "${KBD_DATA_DIR}/hive-metastore-01/tmp/hive_temp:/tmp/hive_temp"
+        networks:
+            playground-net:
+        depends_on:
+            - mysql-node-01
+
+    # Jupyter Notebook
+
+    jupyter-node-01:
+      build:
+        context: .
+        dockerfile: ./Dockerfile.jupyter
+      hostname: jupyter-node-01
+      ports:
+        - 4040:4040
+        - 9999:8888
+      environment:
+        - SPARK_CONF_DIR=/etc/spark
+        - HADOOP_CONF_DIR=/etc/hadoop
+        - HIVE_CONF_DIR=/etc/hive
+      volumes:
+        - "./etc/spark:/etc/spark"
+        - "./etc/hadoop:/etc/hadoop"
+        - "./etc/hive:/etc/hive"
+        - "${KBD_DATA_DIR}/jupyter-node-01/home:/home"
+        - "./../../samples:/bdpc/data/input/samples"
+        - "./data/input:/bdpc/data/input/user"
+        - "./data/output:/bdpc/data/output"
+      networks:
+        playground-net:
+
+networks:
+  playground-net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.105.0.0/24
