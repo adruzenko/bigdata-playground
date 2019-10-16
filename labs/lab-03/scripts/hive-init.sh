@@ -24,6 +24,7 @@ gosu hdfs hdfs dfs -chown hive:hive /user/hue
 gosu hdfs init-hive-dfs.sh
 
 gosu hdfs hdfs dfs -chown -R hive:hive /user/hive
+gosu hdfs hdfs dfs -chmod -R 777 /user/hive/warehouse
 
 schematool -dbType mysql -initSchema
 
