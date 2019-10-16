@@ -23,6 +23,11 @@ dirs= \
   ${KBD_DATA_DIR}/spark-worker-02/tmp \
   ${KBD_DATA_DIR}/spark-worker-02/logs/spark \
   ${KBD_DATA_DIR}/spark-worker-02/logs/hadoop \
+  ${KBD_DATA_DIR}/myql-node-01/data \
+  ${KBD_DATA_DIR}/hive-node-01/logs/hadoop \
+  ${KBD_DATA_DIR}/hive-node-01/tmp/hive_temp \
+  ${KBD_DATA_DIR}/hive-server-01/logs/hadoop \
+  ${KBD_DATA_DIR}/hive-server-01/tmp/hive_temp \
   ${PWD}/data/input \
   ${PWD}/data/output
 
