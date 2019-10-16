@@ -5,7 +5,7 @@ ENV SPARK_PYTHON_VERSION=3.6.9
 RUN conda create -n python-${SPARK_PYTHON_VERSION} -y python=${SPARK_PYTHON_VERSION}
 RUN bash -c "source /opt/conda/etc/profile.d/conda.sh \
     && conda activate python-${SPARK_PYTHON_VERSION} \
-    && conda install -y ipykernel pyspark"
+    && conda install -y ipykernel pyspark jupyter_client=5.3.1"
 
 RUN bash -c "source /opt/conda/etc/profile.d/conda.sh \
     && conda activate python-${SPARK_PYTHON_VERSION} \
