@@ -1,4 +1,5 @@
 KBD_DATA_DIR ?= ../.kbd
+
 dirs= \
   ${KBD_DATA_DIR}/hdfs-namenode-01/logs \
   ${KBD_DATA_DIR}/hdfs-namenode-01/dfs \
@@ -21,7 +22,9 @@ dirs= \
   ${KBD_DATA_DIR}/spark-worker-02/work \
   ${KBD_DATA_DIR}/spark-worker-02/tmp \
   ${KBD_DATA_DIR}/spark-worker-02/logs/spark \
-  ${KBD_DATA_DIR}/spark-worker-02/logs/hadoop
+  ${KBD_DATA_DIR}/spark-worker-02/logs/hadoop \
+  ${PWD}/data/input \
+  ${PWD}/data/output
 
 init:
 	for dir in ${dirs} ; do \

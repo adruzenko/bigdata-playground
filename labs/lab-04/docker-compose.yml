@@ -53,6 +53,10 @@ services:
         - "${KBD_DATA_DIR}/spark-worker-01/logs/hadoop:/var/log/hadoop"
       ports:
         - 9091:8081
+      volumes:
+        - "./../../samples:/bdpc/data/input/samples"
+        - "./data/input:/bdpc/data/input/user"
+        - "./data/output:/bdpc/data/output"
       networks:
           playground-net:
 
@@ -81,6 +85,10 @@ services:
         - "${KBD_DATA_DIR}/spark-worker-02/logs/hadoop:/var/log/hadoop"
       ports:
         - 9092:8081
+      volumes:
+        - "./../../samples:/bdpc/data/input/samples"
+        - "./data/input:/bdpc/data/input/user"
+        - "./data/output:/bdpc/data/output"
       networks:
           playground-net:
 
@@ -202,6 +210,9 @@ services:
         - "./etc/spark:/etc/spark"
         - "./etc/hadoop:/etc/hadoop"
         - "${KBD_DATA_DIR}/jupyter-node-01/home:/home"
+        - "./../../samples:/bdpc/data/input/samples"
+        - "./data/input:/bdpc/data/input/user"
+        - "./data/output:/bdpc/data/output"
       networks:
         playground-net:
 
