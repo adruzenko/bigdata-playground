@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+    </property>
+    <property>
+        <name>mapreduce.cluster.local.dir</name>
+        <value>/tmp/mapred</value>
+    </property>
+    <property>
+        <name>mapreduce.jobhistory.recovery.enable</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>mapreduce.jobhistory.recovery.store.class</name>
+        <value>org.apache.hadoop.mapreduce.v2.hs.HistoryServerFileSystemStateStoreService</value>
+    </property>
+    <property>
+        <name>mapreduce.jobhistory.recovery.store.fs.uri</name>
+        <value>hdfs://hdfs-namenode-01:8020/mapred/history/recoverystore</value>
+    </property>
+    <property>
+        <name>yarn.app.mapreduce.am.staging-dir</name>
+        <value>/mapred/staging</value>
+    </property>
+</configuration>
