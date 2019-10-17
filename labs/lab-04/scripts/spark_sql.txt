@@ -1,0 +1,77 @@
+import pyspark
+from pyspark.sql import SparkSession
+
+sc_conf = pyspark.SparkConf()
+sc_conf.setAppName("spark-sample-app")
+sc_conf.set('spark.executor.cores','1')
+sc_conf.set("spark.executor.memory", '1g')
+
+spark = SparkSession.builder.config(conf=sc_conf).getOrCreate()
+
+============================================================================================
+
+from pyspark.sql.functions import avg
+
+data = [('A', 1), ('B', 2), ('C', 3), ('D', 4), ('E', 5), ("A", 4)]
+rdd = spark.sparkContext.parallelize(data)
+df = rdd.toDF(["name", "volume"])
+df.printSchema()
+df.show()
+
+df.groupBy("name").agg(avg("volume").alias("avg_volume")).show()
+
+===========================================================================================
+
+data = [('First', 1), ('Second', 2), ('Third', 3), ('Fourth', 4), ('Fifth', 5)]
+dfn = spark.createDataFrame(data)
+
+dfn.write.csv("hdfs://hdfs-namenode-01/user/hdfs/test-01/example.csv")
+
+df_load = spark.read.csv('hdfs://hdfs-namenode-01/user/hdfs/test-01/example.csv')
+
+df_load.show()
+
+===========================================================================================
+
+
+df.createOrReplaceTempView("demo_set")
+
+spark.sql("SELECT * FROM demo_set").show()
+spark.sql("SELECT name, AVG(volume) AS avg_volume FROM demo_set GROUP BY name").show()
+
+==========================================================================================
+==========================================================================================
+
+df = spark.read.json("file:/bdpc/data/input/samples/lab05.json")
+df.printSchema()
+df.explain(extended=True)
+
+===========================================================================================
+
+df.write.mode('overwrite').parquet("/user/hdfs/parquet/table1")
+
+===========================================================================================
+
+dfp = spark.read.parquet("/user/hdfs/parquet/table1/*")
+dfp.printSchema()
+dfp.explain(extended=True)
+
+===========================================================================================
+
+dfevent = dfp.select(dfp.event).distinct()
+dfevent.show()
+dfevent.printSchema()
+dfevent.explain(extended=True)
+
+===========================================================================================
+
+dff = (dfp.
+   filter(dfp.event == "order_created").
+   select(dfp.channel, dfp.data.id.alias("id"), dfp.event))
+dff.show()
+dff.printSchema()
+dff.explain(extended=True)
+
+===========================================================================================
+
+
