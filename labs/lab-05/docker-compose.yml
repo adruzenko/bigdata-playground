@@ -23,6 +23,7 @@ services:
         - "${KBD_DATA_DIR}/spark-master-01/tmp:/tmp/spark"
         - "${KBD_DATA_DIR}/spark-master-01/logs/spark:/var/log/spark"
         - "${KBD_DATA_DIR}/spark-master-01/logs/hadoop:/var/log/hadoop"
+        - "./scripts:/bdpc/scripts"
       ports:
           - "9090:8080"
       networks:
