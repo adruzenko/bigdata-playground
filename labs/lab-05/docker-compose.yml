@@ -204,6 +204,8 @@ services:
         volumes:
             - "./etc/hive:/etc/hive"
             - "./etc/hadoop:/etc/hadoop"
+            - "./etc/group:/etc/group"
+            - "./etc/passwd:/etc/passwd"
             - "./scripts/hive-init.sh:/usr/local/bin/hive-init.sh"
             - "${KBD_DATA_DIR}/hive-node-01/logs/hadoop:/var/log/hadoop"
             - "${KBD_DATA_DIR}/hive-node-01/logs/hive:/var/log/hive"
@@ -223,6 +225,8 @@ services:
         volumes:
             - "./etc/hive:/etc/hive"
             - "./etc/hadoop:/etc/hadoop"
+            - "./etc/group:/etc/group"
+            - "./etc/passwd:/etc/passwd"
             - "./scripts/hive-init.sh:/usr/local/bin/hive-init.sh"
             - "${KBD_DATA_DIR}/hive-server-01/logs/hadoop:/var/log/hadoop"
             - "${KBD_DATA_DIR}/hive-server-01/logs/hive:/var/log/hive"
@@ -269,7 +273,7 @@ services:
         - "./etc/spark:/etc/spark"
         - "./etc/hadoop:/etc/hadoop"
         - "./etc/hive:/etc/hive"
-        - "${KBD_DATA_DIR}/jupyter-node-01/home:/home"
+        - "${KBD_DATA_DIR}/jupyter-node-01/home/jovyan:/home/jovyan"
         - "./../../samples:/bdpc/data/input/samples"
         - "./data/input:/bdpc/data/input/user"
         - "./data/output:/bdpc/data/output"
