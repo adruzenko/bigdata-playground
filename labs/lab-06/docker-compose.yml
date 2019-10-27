@@ -1,0 +1,20 @@
+version: '3.5'
+services:
+    solr-node-01:
+        image: solr:8
+        ports:
+            - "8983:8983"
+        volumes:
+            - "${KBD_DATA_DIR}/solr-node-01/data:/var/solr"
+        command:
+            - solr-precreate
+            - gettingstarted
+        networks:
+            playground-net:
+networks:
+    playground-net:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.106.0.0/24
