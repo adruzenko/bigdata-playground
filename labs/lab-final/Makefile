@@ -1,0 +1,52 @@
+KBD_DATA_DIR ?= ../.kbd
+
+dirs= \
+  ${KBD_DATA_DIR}/nifi-node-01/flow \
+  ${KBD_DATA_DIR}/nifi-node-01/flow_archive \
+  ${KBD_DATA_DIR}/nifi-node-01/templates \
+  ${KBD_DATA_DIR}/nifi-node-01/logs \
+  ${KBD_DATA_DIR}/nifi-node-01/database_repository \
+  ${KBD_DATA_DIR}/nifi-node-01/flowfile_repository \
+  ${KBD_DATA_DIR}/nifi-node-01/content_repository \
+  ${KBD_DATA_DIR}/nifi-node-01/provenance_repository \
+  ${KBD_DATA_DIR}/nifi-node-01/state \
+  ${KBD_DATA_DIR}/nifi-node-01/work \
+  ${KBD_DATA_DIR}/hdfs-namenode-01/logs \
+  ${KBD_DATA_DIR}/hdfs-namenode-01/dfs \
+  ${KBD_DATA_DIR}/hdfs-datanode-01/logs \
+  ${KBD_DATA_DIR}/hdfs-datanode-01/dfs \
+  ${KBD_DATA_DIR}/yarn-resourcemanager-01/logs \
+  ${KBD_DATA_DIR}/yarn-nodemanager-01/logs \
+  ${KBD_DATA_DIR}/yarn-nodemanager-01/tmp/mapred \
+  ${KBD_DATA_DIR}/yarn-nodemanager-02/logs \
+  ${KBD_DATA_DIR}/yarn-nodemanager-02/tmp/mapred \
+  ${KBD_DATA_DIR}/jupyter-node-01/home \
+  ${KBD_DATA_DIR}/jupyter-node-01/home/jovyan \
+  ${KBD_DATA_DIR}/spark-master-01/work \
+  ${KBD_DATA_DIR}/spark-master-01/tmp \
+  ${KBD_DATA_DIR}/spark-master-01/logs/spark \
+  ${KBD_DATA_DIR}/spark-master-01/logs/hadoop \
+  ${KBD_DATA_DIR}/spark-worker-01/work \
+  ${KBD_DATA_DIR}/spark-worker-01/tmp \
+  ${KBD_DATA_DIR}/spark-worker-01/logs/spark \
+  ${KBD_DATA_DIR}/spark-worker-01/logs/hadoop \
+  ${KBD_DATA_DIR}/spark-worker-02/work \
+  ${KBD_DATA_DIR}/spark-worker-02/tmp \
+  ${KBD_DATA_DIR}/spark-worker-02/logs/spark \
+  ${KBD_DATA_DIR}/spark-worker-02/logs/hadoop \
+  ${KBD_DATA_DIR}/myql-node-01/data \
+  ${KBD_DATA_DIR}/hive-node-01/logs/hadoop \
+  ${KBD_DATA_DIR}/hive-node-01/tmp/hive_temp \
+  ${KBD_DATA_DIR}/hive-server-01/logs/hadoop \
+  ${KBD_DATA_DIR}/hive-server-01/tmp/hive_temp \
+  ${KBD_DATA_DIR}/hive-metastore-01/logs/hadoop \
+  ${KBD_DATA_DIR}/hive-metastore-01/tmp/hive_temp \
+  ${KBD_DATA_DIR}/solr-node-01/data \
+  ${PWD}/data/input \
+  ${PWD}/data/output
+
+init:
+	for dir in ${dirs} ; do \
+		mkdir -p $$dir ; \
+		chmod 777 $$dir ; \
+	done

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <property>
+    <name>hive.exec.local.scratchdir</name>
+    <value>/tmp/hive_temp</value>
+    <description>Local scratch space for Hive jobs</description>
+  </property>
+  <property>
+    <name>hive.execution.engine</name>
+    <value>mr</value>
+    <description>
+      Expects one of [mr, tez, spark].
+      Chooses execution engine. Options are: mr (Map reduce, default)</description>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionURL</name>
+    <value>jdbc:mysql://mysql-node-01/hive?createDatabaseIfNotExist=true&amp;useSSL=false</value>
+    <description>metadata is stored in a MySQL server</description>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionDriverName</name>
+    <value>com.mysql.jdbc.Driver</value>
+    <description>Driver class name for a JDBC metastore</description>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionUserName</name>
+    <value>hive</value>
+    <description>Username to use against metastore database</description>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionPassword</name>
+    <value>hive_secret</value>
+    <description>password to use against metastore database</description>
+  </property>
+  <property>
+    <name>hive.exec.scratchdir</name>
+    <value>/tmp/hive_tmp</value>
+    <description>HDFS root scratch dir for Hive jobs which gets created with write all (733) permission</description>
+  </property>
+  <property>
+    <name>hive.server2.thrift.port</name>
+    <value>10000</value>
+  </property>
+  <!--property>
+    <name>hive.metastore.uris</name>
+    <value>thrift://hive-metastore-01:9083</value>
+  </property-->
+</configuration>
+
+<!--
+Please, do not forget to set the following configuration properties in hive-site.xml:
+hive.metastore.warehouse.dir=/user/hive/warehouse
+hive.exec.scratchdir=/tmp
+-->
